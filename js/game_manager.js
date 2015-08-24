@@ -6,13 +6,15 @@ function GameManager(){
     this.aiButton = document.getElementById('ai-button');
 
     this.gravityUpdater = new Updater();
-    this.gravityUpdater.skipping = this.aiActive;
+    this.gravityUpdater.skipping = false;//this.aiActive;
     this.gravityUpdater.onUpdate(function(){
+		self.gravityUpdater.skipping = self.workingPiece.row > 5;
         self.applyGravity();
         self.actuate();
     });
 
     var self = this;
+	/*
     document.addEventListener("keydown", function (event){
         switch(event.which){
             case 32: //drop
@@ -36,6 +38,7 @@ function GameManager(){
                 break;
         }
     });
+	*/
     this.aiButton.onclick = function(){
         if (self.aiActive){
             self.stopAI();
@@ -54,7 +57,7 @@ function GameManager(){
 
 GameManager.prototype.setup = function(){
     this.grid = new Grid(22, 10);
-    this.rpg = new RandomPieceGenerator();
+    this.rpg = new PlayerPieceGenerator();
     this.ai = new AI(0.510066, 0.760666, 0.35663, 0.184483);
     this.workingPieces = [this.rpg.nextPiece(), this.rpg.nextPiece()];
     this.workingPiece = this.workingPieces[0];
@@ -111,7 +114,7 @@ GameManager.prototype.actuate = function(){
 GameManager.prototype.startAI = function(){
     this.aiActive = true;
     this.aiButton.style.backgroundColor = "#e9e9ff";
-    this.gravityUpdater.skipping = true;
+    //this.gravityUpdater.skipping = true;
 };
 
 GameManager.prototype.stopAI = function(){
@@ -131,7 +134,7 @@ GameManager.prototype.setWorkingPiece = function(){
         this.workingPiece = this.workingPieces[0];
         if (this.aiActive) {
             this.aiMove();
-            this.gravityUpdater.skipping = true;
+            //this.gravityUpdater.skipping = true;
         }
     }else{
         alert("Game Over!");
