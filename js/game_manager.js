@@ -8,7 +8,7 @@ function GameManager(){
     this.gravityUpdater = new Updater();
     this.gravityUpdater.skipping = false;//this.aiActive;
     this.gravityUpdater.onUpdate(function(){
-		self.gravityUpdater.skipping = self.workingPiece.row > 5;
+		self.gravityUpdater.skipping = self.workingPiece.row > 2;
         self.applyGravity();
         self.actuate();
     });

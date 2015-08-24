@@ -21,7 +21,6 @@ PlayerPieceGenerator.prototype.setupUi = function() {
 			for(var c = 0; c < next.dimension; c++){
 				if (next.cells[r][c] == 1){
 					context.fillRect(xOffset + 20 * c, yOffset + 20 * r, 20, 20);
-					
 					context.strokeRect(xOffset + 20 * c, yOffset + 20 * r, 20, 20);
 				}
 			}
@@ -36,6 +35,7 @@ PlayerPieceGenerator.prototype.setupUi = function() {
 		}
 		this.pieceChooser.appendChild(imgElem);
 	}
+	this.pieceQueueCanvas = document.getElementById("piecequeuecanvas");
 }
 
 PlayerPieceGenerator.prototype.pieceClicked = function(e) {
@@ -54,7 +54,26 @@ PlayerPieceGenerator.prototype.nextPiece = function(){
 };
 
 PlayerPieceGenerator.prototype.updateQueue = function() {
-	document.getElementById("piecequeue").textContent = this.bag.toString();
+	var canvas = this.pieceQueueCanvas;
+	var blockwidth = 8;
+	canvas.height = this.bag.length * (5*blockwidth);
+	canvas.width = 6*blockwidth;
+	var context = this.pieceQueueCanvas.getContext("2d");
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	context.fillStyle="#FF0000";
+	context.strokeStyle="#FFFFFF";
+	for (var i = 0; i < this.bag.length; i++) {
+		var next = Piece.fromIndex(this.bag[i]);
+		var xOffset = next.dimension == 2 ? blockwidth : next.dimension == 3 ? blockwidth / 2 : next.dimension == 4 ? 0 : null;
+		var yOffset = next.dimension == 2 ? blockwidth : next.dimension == 3 ? blockwidth : next.dimension == 4 ? blockwidth / 2 : null;
+		for(var r = 0; r < next.dimension; r++){
+			for(var c = 0; c < next.dimension; c++){
+				if (next.cells[r][c] == 1){
+					context.fillRect(xOffset + blockwidth * c, i*5*blockwidth + yOffset + blockwidth * r, blockwidth, blockwidth);
+				}
+			}
+		}
+	}
 }
 
 PlayerPieceGenerator.prototype.shuffleBag = function() {
