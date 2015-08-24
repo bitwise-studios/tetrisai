@@ -1,6 +1,7 @@
 function ScoreManager(){
 	this.lastClearCount = 0;
-	this.rageLevel = 100;
+	this.rageLevelLines = 100;
+	this.rageLevel = this.rageLevelLines * 0.5 + 0;
 	this.score = 0;
 
 	this.rageContainer = document.getElementById("rage-container");
@@ -12,10 +13,15 @@ function ScoreManager(){
 
 ScoreManager.prototype.lineClearNotify = function(lines){
 	this.lastClearCount = 0;
-	this.rageLevel = this.rageLevel / 2;//this.rageLevel / Math.pow(2, lines);
+	this.rageLevelLines = this.rageLevelLines / 2;//this.rageLevel / Math.pow(2, lines);
 };
 
-ScoreManager.prototype.update = function(){
+ScoreManager.prototype.update = function(grid){
+	if (!grid) {
+		this.rageContainer.innerHTML = Math.round(this.rageLevel);//Math.round(this.score); // temporary
+		this.updateStatus();
+		return;
+	}
 	this.lastClearCount++;
 	console.log(this.lastClearCount);
     if (this.lastClearCount != 0)
@@ -23,10 +29,11 @@ ScoreManager.prototype.update = function(){
         if (this.lastClearCount % 3 == 0)
         {
             // update rage level
-            this.rageLevel = this.rageLevel * 1.5;
-            this.rageLevel++;
+            this.rageLevelLines = this.rageLevelLines * 1.5;
+            this.rageLevelLines++;
         }
     }
+	this.rageLevel = this.rageLevelLines*0.5 + grid.aggregateHeight()*0.5;
 
     if(this.rageLevel > 1000)
     {

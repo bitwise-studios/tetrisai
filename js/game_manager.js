@@ -159,7 +159,7 @@ GameManager.prototype.applyGravity = function(){
         // lock piece i.e. update score and update # pieces dropped
         this.gravityUpdater.skipping = false;
         this.setWorkingPiece();
-        this.scoreManager.update();
+        this.scoreManager.update(this.grid);
     }
 };
 
