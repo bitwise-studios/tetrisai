@@ -152,6 +152,7 @@ GameManager.prototype.setWorkingPiece = function(){
 };
 
 GameManager.prototype.applyGravity = function(){
+	if (gameOver) return;
     if (this.grid.canMoveDown(this.workingPiece)) {
         this.workingPiece.row++;
     }else{
