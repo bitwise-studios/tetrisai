@@ -128,7 +128,11 @@ GameManager.prototype.stopAI = function(){
 
 GameManager.prototype.setWorkingPiece = function(){
     this.grid.addPiece(this.workingPiece);
-    this.score += this.grid.clearLines();
+    var linesCleared = this.grid.clearLines();
+    this.score += linesCleared;
+    if(linesCleared > 0){
+        this.scoreManager.lineClearNotify(linesCleared);
+    }
     if (!this.grid.exceeded()){
         for(var i = 0; i < this.workingPieces.length - 1; i++){
             this.workingPieces[i] = this.workingPieces[i + 1];
@@ -152,9 +156,9 @@ GameManager.prototype.applyGravity = function(){
         this.workingPiece.row++;
     }else{
         // lock piece i.e. update score and update # pieces dropped
-        this.scoreManager.update();
         this.gravityUpdater.skipping = false;
         this.setWorkingPiece();
+        this.scoreManager.update();
     }
 };
 

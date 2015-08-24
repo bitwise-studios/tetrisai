@@ -14,6 +14,7 @@ ScoreManager.prototype.lineClearNotify = function(lines){
 
 ScoreManager.prototype.update = function(){
 	this.lastClearCount++;
+	console.log(this.lastClearCount);
     if (this.lastClearCount != 0)
     {
         if (this.lastClearCount % 5 == 0)
@@ -25,7 +26,7 @@ ScoreManager.prototype.update = function(){
     }
     if(this.rageLevel > 1000)
     {
-        this.score += this.rageLevel / (Mathf.Log10(this.rageLevel) * 10);
+        this.score += this.rageLevel / (Math.log10(this.rageLevel) * 10);
     }
     else if(this.rageLevel > 100)
     {
