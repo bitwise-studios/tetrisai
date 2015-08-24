@@ -1,5 +1,5 @@
 function PlayerPieceGenerator(){
-    this.bag = [0, 1];
+    this.bag = [];
 	this.setupUi();
 };
 
@@ -39,14 +39,23 @@ PlayerPieceGenerator.prototype.setupUi = function() {
 }
 
 PlayerPieceGenerator.prototype.pieceClicked = function(e) {
+	if(this.bag.length > 4)
+		return;
 	this.bag.push(parseInt(e.target.alt));
+	this.updateQueue();
+}
+
+PlayerPieceGenerator.prototype.clearBag = function(e){
+	this.bag.length = 0;
 	this.updateQueue();
 }
 
 PlayerPieceGenerator.prototype.nextPiece = function(){
 	if (this.bag.length == 0) {
-		alert("YOU FAIL");
-		return null;
+		console.log("YOU FAIL");
+		return Piece.fromIndex(Math.floor((Math.random() * 7)));
+		//alert("YOU FAIL");
+		//return null;
 	}
     var retval = Piece.fromIndex(this.bag.shift());
 	this.updateQueue();

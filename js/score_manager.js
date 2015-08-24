@@ -5,11 +5,13 @@ function ScoreManager(){
 
 	this.rageContainer = document.getElementById("rage-container");
 	this.statusContainer = document.getElementById("status-container");
+
+	this.update();
 }
 
 ScoreManager.prototype.lineClearNotify = function(lines){
 	this.lastClearCount = 0;
-	this.rageLevel = this.rageLevel / Math.pow(2, lines);
+	this.rageLevel = this.rageLevel / 1.25;//this.rageLevel / Math.pow(2, lines);
 };
 
 ScoreManager.prototype.update = function(){
@@ -17,13 +19,14 @@ ScoreManager.prototype.update = function(){
 	console.log(this.lastClearCount);
     if (this.lastClearCount != 0)
     {
-        if (this.lastClearCount % 5 == 0)
+        if (this.lastClearCount % 3 == 0)
         {
             // update rage level
-            this.rageLevel = this.rageLevel * 2;
+            this.rageLevel = this.rageLevel * 1.5;
             this.rageLevel++;
         }
     }
+
     if(this.rageLevel > 1000)
     {
         this.score += this.rageLevel / (Math.log10(this.rageLevel) * 10);
