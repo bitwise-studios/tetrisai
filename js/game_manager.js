@@ -1,3 +1,4 @@
+var gameOver = false;
 function GameManager(){
     this.gridCanvas = document.getElementById('grid-canvas');
     this.nextCanvas = document.getElementById('next-canvas');
@@ -14,6 +15,8 @@ function GameManager(){
     });
 
     var self = this;
+
+    this.scoreManager = new ScoreManager();
 	/*
     document.addEventListener("keydown", function (event){
         switch(event.which){
@@ -137,7 +140,10 @@ GameManager.prototype.setWorkingPiece = function(){
             //this.gravityUpdater.skipping = true;
         }
     }else{
-        alert("Game Over!");
+        if(!gameOver){
+            alert("Game Over!");
+            gameOver = true;
+        }
     }
 };
 
@@ -146,6 +152,7 @@ GameManager.prototype.applyGravity = function(){
         this.workingPiece.row++;
     }else{
         // lock piece i.e. update score and update # pieces dropped
+        this.scoreManager.update();
         this.gravityUpdater.skipping = false;
         this.setWorkingPiece();
     }
