@@ -145,6 +145,7 @@ GameManager.prototype.applyGravity = function(){
     if (this.grid.canMoveDown(this.workingPiece)) {
         this.workingPiece.row++;
     }else{
+        // lock piece i.e. update score and update # pieces dropped
         this.gravityUpdater.skipping = false;
         this.setWorkingPiece();
     }
