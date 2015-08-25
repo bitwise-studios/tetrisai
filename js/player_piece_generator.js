@@ -1,11 +1,14 @@
 function PlayerPieceGenerator(){
     this.bag = [];
 	this.setupUi();
+	this.bagCount = new Array(7);
 };
 
 PlayerPieceGenerator.prototype.setupUi = function() {
 	var canvas = document.createElement("canvas");
 	this.pieceImgUrls = new Array(7);
+	this.pieceImgUrlsDisabled = new Array(7);
+	this.pieceImg = new Array(7);
 	this.pieceChooser = document.getElementById("piecechooser");
 	this.pieceChooser.innerHTML = "";
 	for (var i = 0; i < 7; i++) {
@@ -34,6 +37,20 @@ PlayerPieceGenerator.prototype.setupUi = function() {
 			that.pieceClicked(e);
 		}
 		this.pieceChooser.appendChild(imgElem);
+		this.pieceImg[i] = imgElem;
+
+		context.fillStyle="#bebebe";
+
+		for(var r = 0; r < next.dimension; r++){
+			for(var c = 0; c < next.dimension; c++){
+				if (next.cells[r][c] == 1){
+					context.fillRect(xOffset + 20 * c, yOffset + 20 * r, 20, 20);
+					context.strokeRect(xOffset + 20 * c, yOffset + 20 * r, 20, 20);
+				}
+			}
+		}
+
+		this.pieceImgUrlsDisabled[i] = canvas.toDataURL();
 	}
 	this.pieceQueueCanvas = document.getElementById("piecequeuecanvas");
 }
@@ -41,6 +58,9 @@ PlayerPieceGenerator.prototype.setupUi = function() {
 PlayerPieceGenerator.prototype.pieceClicked = function(e) {
 	if(this.bag.length > 4)
 		return;
+	if (this.bagCount[parseInt(e.target.alt)] >= 2) {
+		return;
+	}
 	this.bag.push(parseInt(e.target.alt));
 	this.updateQueue();
 }
@@ -71,6 +91,9 @@ PlayerPieceGenerator.prototype.updateQueue = function() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	context.fillStyle="#FF0000";
 	context.strokeStyle="#FFFFFF";
+	for (var c = 0; c < this.bagCount.length; c++) {
+		this.bagCount[c] = 0;
+	}
 	for (var i = 0; i < this.bag.length; i++) {
 		var next = Piece.fromIndex(this.bag[i]);
 		var xOffset = next.dimension == 2 ? blockwidth : next.dimension == 3 ? blockwidth / 2 : next.dimension == 4 ? 0 : null;
@@ -82,6 +105,10 @@ PlayerPieceGenerator.prototype.updateQueue = function() {
 				}
 			}
 		}
+		this.bagCount[this.bag[i]] += 1;
+	}
+	for (var c = 0; c < this.bagCount.length; c++) {
+		this.pieceImg[c].src = (this.bagCount[c] >= 2 || this.bag.length > 4)? this.pieceImgUrlsDisabled[c]:this.pieceImgUrls[c];
 	}
 }
 
