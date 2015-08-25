@@ -5,13 +5,14 @@ function ScoreManager(){
 
 	this.rageContainer = document.getElementById("rage-container");
 	this.statusContainer = document.getElementById("status-container");
+    this.scoreContainer = document.getElementById("rscore-container");
 
 	this.update();
 }
 
 ScoreManager.prototype.lineClearNotify = function(lines){
 	this.lastClearCount = 0;
-	this.rageLevel = this.rageLevel / 1.25;//this.rageLevel / Math.pow(2, lines);
+	this.rageLevel = this.rageLevel / 2;//this.rageLevel / Math.pow(2, lines);
 };
 
 ScoreManager.prototype.update = function(){
@@ -40,6 +41,7 @@ ScoreManager.prototype.update = function(){
         this.score += ((this.rageLevel - 100) * (this.score > 10 ? Math.log10(this.score) : 1));
     }
     this.rageContainer.innerHTML = Math.round(this.rageLevel);//Math.round(this.score); // temporary
+    this.scoreContainer.innerHTML = Math.round(this.score);
     this.updateStatus();
 
 };
